@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width">380dp</dimen>
+    <dimen name="margin_top">19dp</dimen>
+    <dimen name="padding">5dp</dimen>
+    <dimen name="button_text_size">20sp</dimen>
+    <dimen name="desc_text_size">18sp</dimen>
+    <dimen name="name_title_size">35sp</dimen>
+    <dimen name="corner">5dp</dimen>
+    <dimen name="progressbar_size">50dp</dimen>
+
+</resources>
