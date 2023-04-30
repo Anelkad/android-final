@@ -1,14 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SellerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Seller" />
+        android:layout_height="50dp"
+        android:background="@color/purple_700">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seller"
+            android:textColor="@color/purple_200"
+            android:textSize="@dimen/name_title_size"
+            android:textStyle="bold"
+            />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/sellerContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolBar"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/title"
+            android:hint="Title"
+            android:layout_width="@dimen/width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:textColor="@color/purple_700"
+            android:textColorHint="@color/purple_700"
+            android:background="@drawable/edittext_bg"
+            android:padding="@dimen/padding"
+            android:textSize="@dimen/button_text_size"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/description"
+            android:hint="Description"
+            android:layout_width="@dimen/width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:textColor="@color/purple_700"
+            android:textColorHint="@color/purple_700"
+            android:background="@drawable/edittext_bg"
+            android:padding="@dimen/padding"
+            android:textSize="@dimen/button_text_size"/>
+
+        <EditText
+            android:id="@+id/image"
+            android:hint="Image URL"
+            android:layout_width="@dimen/width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:textColor="@color/purple_700"
+            android:textColorHint="@color/purple_700"
+            android:background="@drawable/edittext_bg"
+            android:padding="@dimen/padding"
+            android:textSize="@dimen/button_text_size"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/price"
+            android:hint="Price"
+            android:layout_width="@dimen/width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:textColor="@color/purple_700"
+            android:textColorHint="@color/purple_700"
+            android:background="@drawable/edittext_bg"
+            android:padding="@dimen/padding"
+            android:textSize="@dimen/button_text_size"
+            android:inputType="number"/>
+
+    <Button
+        android:id="@+id/publishButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
+        android:text="Publish Product"/>
+
+</LinearLayout>
+
+</RelativeLayout>

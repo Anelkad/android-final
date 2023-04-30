@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_card" >
         <action
             android:id="@+id/action_cardFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_cardFragment_to_confirmPurchaseFragment"
+            app:destination="@id/confirmPurchaseFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -53,5 +56,19 @@
         android:id="@+id/productDetailsFragment"
         android:name="com.example.finalproject.fragments.ProductDetailsFragment"
         android:label="fragment_product_details"
-        tools:layout="@layout/fragment_product_details" />
+        tools:layout="@layout/fragment_product_details" >
+        <action
+            android:id="@+id/action_productDetailsFragment_to_commentProductFragment"
+            app:destination="@id/commentProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentProductFragment"
+        android:name="com.example.finalproject.fragments.CommentProductFragment"
+        android:label="fragment_comment_product"
+        tools:layout="@layout/fragment_comment_product" />
+    <fragment
+        android:id="@+id/confirmPurchaseFragment"
+        android:name="com.example.finalproject.fragments.ConfirmPurchaseFragment"
+        android:label="fragment_confirm_purchase"
+        tools:layout="@layout/fragment_confirm_purchase" />
 </navigation>

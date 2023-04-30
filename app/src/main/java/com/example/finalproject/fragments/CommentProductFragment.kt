@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.finalproject.R
 
-class SellerFragment : Fragment(R.layout.fragment_seller) {
+class CommentProductFragment : Fragment(R.layout.fragment_comment_product) {
 
 
 }

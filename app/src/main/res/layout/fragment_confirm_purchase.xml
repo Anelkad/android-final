@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CardFragment">
+    tools:context=".fragments.ConfirmPurchaseFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"
@@ -14,11 +14,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Card"
+            android:text="Confirm Purchase"
             android:textColor="@color/purple_200"
             android:textSize="@dimen/name_title_size"
             android:textStyle="bold"
             />
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -30,13 +31,12 @@
         />
 
     <Button
-        android:id="@+id/purchaseButton"
+        android:id="@+id/confirmPurchaseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
-        android:text="Purchase"
+        android:text="Confirm"
         android:layout_below="@+id/listView"
         android:layout_centerInParent="true"/>
-
 
 </RelativeLayout>

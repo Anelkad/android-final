@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.finalproject.R
 
-class SellerFragment : Fragment(R.layout.fragment_seller) {
-
+class ConfirmPurchaseFragment : Fragment(R.layout.fragment_confirm_purchase) {
 
 }

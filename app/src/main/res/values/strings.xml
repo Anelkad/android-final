@@ -19,5 +19,7 @@
     <string name="passwordNotEqual">Password and Confirm Password are not equal!</string>
     <string name="successSignUp">Successfully Sign Up user!</string>
     <string name="successLogIn">Successfully Log In!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
