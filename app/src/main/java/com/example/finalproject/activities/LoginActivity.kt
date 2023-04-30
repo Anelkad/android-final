@@ -40,6 +40,8 @@ class LoginActivity : BaseActivity() {
                         //FirestoreClass().getUserDetails(this@LoginActivity)
                         Toast.makeText(this,resources.getString(R.string.successLogIn),
                             Toast.LENGTH_LONG).show()
+                        startMainActivity()
+
                     } else {
                         showSnackBar(it.exception!!.message.toString(),true)
                     }
@@ -49,6 +51,12 @@ class LoginActivity : BaseActivity() {
 
     private fun startSignUpActivity(){
         val intent = Intent (this, SignUpActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun startMainActivity(){
+        val intent = Intent (this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
