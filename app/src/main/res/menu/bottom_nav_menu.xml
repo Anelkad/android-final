@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/productListFragment"
+    <item android:id="@+id/home_graph"
         android:title="Main"
         android:icon="@drawable/baseline_home_24"/>
 
-    <item android:id="@+id/searchProductFragment"
+    <item android:id="@+id/search_graph"
         android:title="Search"
         android:icon="@drawable/baseline_search_24"/>
 
-    <item android:id="@+id/cardFragment"
+    <item android:id="@+id/card_graph"
         android:title="Card"
         android:icon="@drawable/baseline_shopping_basket_24"/>
 
-    <item android:id="@+id/sellerFragment"
+    <item android:id="@+id/seller_graph"
         android:title="Seller"
         android:icon="@drawable/baseline_badge_24"/>
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_graph"
+    app:startDestination="@id/cardFragment">
+
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="com.example.finalproject.fragments.CardFragment"
+        android:label="fragment_card"
+        tools:layout="@layout/fragment_card" >
+        <action
+            android:id="@+id/action_cardFragment_to_confirmPurchaseFragment"
+            app:destination="@id/confirmPurchaseFragment" />
+        <action
+            android:id="@+id/action_cardFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmPurchaseFragment"
+        android:name="com.example.finalproject.fragments.ConfirmPurchaseFragment"
+        android:label="fragment_confirm_purchase"
+        tools:layout="@layout/fragment_confirm_purchase" />
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.example.finalproject.fragments.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" />
+</navigation>

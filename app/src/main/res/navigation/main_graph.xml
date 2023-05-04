@@ -3,72 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/productListFragment">
+    app:startDestination="@+id/home_graph">
 
-    <fragment
-        android:id="@+id/cardFragment"
-        android:name="com.example.finalproject.fragments.CardFragment"
-        android:label="fragment_card"
-        tools:layout="@layout/fragment_card" >
-        <action
-            android:id="@+id/action_cardFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment" />
-        <action
-            android:id="@+id/action_cardFragment_to_confirmPurchaseFragment"
-            app:destination="@id/confirmPurchaseFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
-    <fragment
-        android:id="@+id/productListFragment"
-        android:name="com.example.finalproject.fragments.ProductListFragment"
-        android:label="fragment_product_list"
-        tools:layout="@layout/fragment_product_list" >
-        <action
-            android:id="@+id/action_productListFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
-    <fragment
-        android:id="@+id/searchProductFragment"
-        android:name="com.example.finalproject.fragments.SearchProductFragment"
-        android:label="fragment_search_product"
-        tools:layout="@layout/fragment_search_product" >
-        <action
-            android:id="@+id/action_searchProductFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
-    <fragment
-        android:id="@+id/sellerFragment"
-        android:name="com.example.finalproject.fragments.SellerFragment"
-        android:label="fragment_seller"
-        tools:layout="@layout/fragment_seller" />
-    <fragment
-        android:id="@+id/productDetailsFragment"
-        android:name="com.example.finalproject.fragments.ProductDetailsFragment"
-        android:label="fragment_product_details"
-        tools:layout="@layout/fragment_product_details" >
-        <action
-            android:id="@+id/action_productDetailsFragment_to_commentProductFragment"
-            app:destination="@id/commentProductFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/commentProductFragment"
-        android:name="com.example.finalproject.fragments.CommentProductFragment"
-        android:label="fragment_comment_product"
-        tools:layout="@layout/fragment_comment_product" />
-    <fragment
-        android:id="@+id/confirmPurchaseFragment"
-        android:name="com.example.finalproject.fragments.ConfirmPurchaseFragment"
-        android:label="fragment_confirm_purchase"
-        tools:layout="@layout/fragment_confirm_purchase" />
+    <include app:graph="@navigation/home_graph" />
+    <include app:graph="@navigation/search_graph" />
+    <include app:graph="@navigation/card_graph" />
+    <include app:graph="@navigation/seller_graph" />
+
 </navigation>
