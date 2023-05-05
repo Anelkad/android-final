@@ -2,16 +2,23 @@ package com.example.finalproject.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.example.finalproject.R
+import com.example.finalproject.utils.Resource
 import com.example.finalproject.databinding.ActivityLoginBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.finalproject.viewmodels.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : BaseActivity() {
 
     lateinit var binding: ActivityLoginBinding
     private lateinit var email: String
     private lateinit var password: String
+    val authViewModel by viewModels<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,30 +30,32 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.loginButton.setOnClickListener {
-            loginUser()
+            if (validateLoginFields()){
+                authViewModel.logInUser(email,password)
+            }
         }
-    }
 
-    private fun loginUser() {
-        showWaitDialog()
-
-        if (validateLoginFields()){
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener {
-
-                    hideWaitDialog()
-
-                    if (it.isSuccessful) {
-                        //FirestoreClass().getUserDetails(this@LoginActivity)
-                        Toast.makeText(this,resources.getString(R.string.successLogIn),
-                            Toast.LENGTH_LONG).show()
-                        startMainActivity()
-
-                    } else {
-                        showSnackBar(it.exception!!.message.toString(),true)
-                    }
+        authViewModel.loginState.observe(this, Observer {
+            when(it){
+                is Resource.Failure -> {
+                    if (isDialogInit()) hideWaitDialog()
+                    Log.d("qwerty", "login fail")
+                    showSnackBar(it.exception.message.toString(),true)
                 }
-        }
+                is Resource.Loading -> {
+                    showWaitDialog()
+                    Log.d("qwerty", "login load")
+                }
+                is Resource.Success -> {
+                    if (isDialogInit()) hideWaitDialog()
+                    Log.d("qwerty", "login success")
+                    Toast.makeText(this, resources.getString(R.string.successLogIn),Toast.LENGTH_LONG)
+                        .show()
+                    startMainActivity()
+                }
+                else -> Unit
+            }
+        })
     }
 
     private fun startSignUpActivity(){
@@ -67,17 +76,14 @@ class LoginActivity : BaseActivity() {
 
         return when{
             email.isEmpty() -> {
-                hideWaitDialog()
                 showSnackBar(resources.getString(R.string.emailIsEmpty),true)
                 false
             }
             password.isEmpty() -> {
-                hideWaitDialog()
                 showSnackBar(resources.getString(R.string.passwordIsEmpty),true)
                 false
             }
             else -> {
-                //showSnackBar("Success",false)
                 true
             }
         }

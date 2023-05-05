@@ -28,6 +28,9 @@ open class BaseActivity : AppCompatActivity() {
         snackBar.show()
     }
 
+    fun isDialogInit():Boolean{
+        return this::waitDialog.isInitialized
+    }
     fun showWaitDialog(){
         waitDialog = Dialog(this)
         waitDialog.setContentView(R.layout.wait_dialog)
