@@ -7,7 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.finalproject.R
 
-class ProductListFragment : Fragment(R.layout.fragment_product_list) {
-
+class ProductListFragment : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_product_list, container, false)
+    }
 
 }

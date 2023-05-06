@@ -56,7 +56,6 @@ class AuthRepositoryImp @Inject constructor(
             .addOnSuccessListener {
                 if (it.exists()){val user = it.getValue(User::class.java)!!
                 resource = Resource.Success(user)
-                Log.d("qwerty repository current user", resource.toString())
             }}
             .await()
         }
@@ -64,7 +63,6 @@ class AuthRepositoryImp @Inject constructor(
             e.printStackTrace()
             resource = Resource.Failure(e)
         }
-        Log.d("qwerty repository", resource.toString())
         return resource
     }
 

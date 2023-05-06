@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity() {
         authViewModel.loginState.observe(this, Observer {
             when(it){
                 is Resource.Failure -> {
-                    if (isDialogInit()) hideWaitDialog()
+                    hideWaitDialog()
                     //Log.d("qwerty", "login fail")
                     showSnackBar(it.exception.message.toString(),true)
                 }
@@ -47,7 +47,7 @@ class LoginActivity : BaseActivity() {
                     //Log.d("qwerty", "login load")
                 }
                 is Resource.Success -> {
-                    if (isDialogInit()) hideWaitDialog()
+                    hideWaitDialog()
                     val user = it.getSuccessResult()
                     //Log.d("qwerty login", user.email!!)
                     Toast.makeText(this, resources.getString(R.string.successLogIn),Toast.LENGTH_LONG)

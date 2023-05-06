@@ -38,14 +38,12 @@ open class AuthViewModel @Inject constructor(
     fun getCurrentUserDetails() = viewModelScope.launch {
         _currentUserState.value = Resource.Loading
         val result = repository.getCurrentUserDetails()
-        Log.d("qwerty viewmodel current user", result.toString())
         _currentUserState.value = result
     }
 
     fun logInUser(email: String, password: String) = viewModelScope.launch {
         _loginState.value = Resource.Loading
         val result = repository.logIn(email, password)
-        //Log.d("qwerty viewmodel login", result.toString())
         _loginState.value = result
     }
 

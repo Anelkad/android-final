@@ -1,34 +1,34 @@
-package com.example.finalproject.activities
+package com.example.finalproject.fragments
 
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.finalproject.R
 import com.google.android.material.snackbar.Snackbar
 
-open class BaseActivity : AppCompatActivity() {
-
+open class BaseFragment: Fragment() {
     private lateinit var waitDialog: Dialog
 
     fun showSnackBar(message: String, isError: Boolean) {
         val snackBar =
-            Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+            Snackbar.make(requireActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
         val snackBarView = snackBar.view
-        snackBar.setTextColor(getColor(R.color.white))
+        snackBar.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
 
         if (isError) {
             snackBarView.setBackgroundColor(
-                ContextCompat.getColor(this, R.color.colorSnackBarError)
+                ContextCompat.getColor(requireActivity(), R.color.colorSnackBarError)
             )
         } else {
             snackBarView.setBackgroundColor(
-                ContextCompat.getColor(this, R.color.colorSnackBarSuccess)
+                ContextCompat.getColor(requireActivity(), R.color.colorSnackBarSuccess)
             )
         }
         snackBar.show()
     }
+
     fun showWaitDialog(){
-        waitDialog = Dialog(this)
+        waitDialog = Dialog(requireActivity())
         waitDialog.setContentView(R.layout.wait_dialog)
 
         waitDialog.setCancelable(false)

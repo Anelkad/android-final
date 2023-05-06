@@ -48,7 +48,7 @@ class SignUpActivity : BaseActivity() {
         authViewModel.signupState.observe(this, Observer {
             when(it){
                 is Resource.Failure -> {
-                    if (isDialogInit()) hideWaitDialog()
+                    hideWaitDialog()
                     //Log.d("qwerty", "sign up fail")
                     showSnackBar(it.exception.message.toString(),true)
                 }
@@ -57,7 +57,7 @@ class SignUpActivity : BaseActivity() {
                     //Log.d("qwerty", "sign up loading")
                 }
                 is Resource.Success -> {
-                    if (isDialogInit()) hideWaitDialog()
+                    hideWaitDialog()
                     //Log.d("qwerty", "sign up success")
                     Toast.makeText(this, resources.getString(R.string.successSignUp),Toast.LENGTH_LONG)
                         .show()

@@ -6,7 +6,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorSnackBarError">#6C2A69</color>
-    <color name="colorSnackBarSuccess">#09B52E</color>
+    <color name="colorSnackBarError">#EE6C2A69</color>
+    <color name="colorSnackBarSuccess">#ED0BCC2B</color>
 
 </resources>
