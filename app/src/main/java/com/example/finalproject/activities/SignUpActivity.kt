@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.example.finalproject.R
 import com.example.finalproject.utils.Resource
 import com.example.finalproject.databinding.ActivitySignUpBinding
+import com.example.finalproject.models.User
 import com.example.finalproject.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +36,12 @@ class SignUpActivity : BaseActivity() {
 
         binding.signUpButton.setOnClickListener {
             if (validateSignUpFields()){
-                authViewModel.signUpUser(email, password)
+                val user = User(
+                    firstName,
+                    lastName,
+                    email
+                )
+                authViewModel.signUpUser(email, password, user)
             }
         }
 
@@ -43,16 +49,16 @@ class SignUpActivity : BaseActivity() {
             when(it){
                 is Resource.Failure -> {
                     if (isDialogInit()) hideWaitDialog()
-                    Log.d("qwerty", "sign up fail")
+                    //Log.d("qwerty", "sign up fail")
                     showSnackBar(it.exception.message.toString(),true)
                 }
                 is Resource.Loading -> {
                     showWaitDialog()
-                    Log.d("qwerty", "sign up loading")
+                    //Log.d("qwerty", "sign up loading")
                 }
                 is Resource.Success -> {
                     if (isDialogInit()) hideWaitDialog()
-                    Log.d("qwerty", "sign up success")
+                    //Log.d("qwerty", "sign up success")
                     Toast.makeText(this, resources.getString(R.string.successSignUp),Toast.LENGTH_LONG)
                         .show()
                     startLoginActivity()

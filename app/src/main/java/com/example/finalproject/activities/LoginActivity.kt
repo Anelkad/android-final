@@ -39,16 +39,17 @@ class LoginActivity : BaseActivity() {
             when(it){
                 is Resource.Failure -> {
                     if (isDialogInit()) hideWaitDialog()
-                    Log.d("qwerty", "login fail")
+                    //Log.d("qwerty", "login fail")
                     showSnackBar(it.exception.message.toString(),true)
                 }
                 is Resource.Loading -> {
                     showWaitDialog()
-                    Log.d("qwerty", "login load")
+                    //Log.d("qwerty", "login load")
                 }
                 is Resource.Success -> {
                     if (isDialogInit()) hideWaitDialog()
-                    Log.d("qwerty", "login success")
+                    val user = it.getSuccessResult()
+                    //Log.d("qwerty login", user.email!!)
                     Toast.makeText(this, resources.getString(R.string.successLogIn),Toast.LENGTH_LONG)
                         .show()
                     startMainActivity()

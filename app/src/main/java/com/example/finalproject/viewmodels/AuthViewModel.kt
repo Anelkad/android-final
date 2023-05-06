@@ -1,9 +1,11 @@
 package com.example.finalproject.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.finalproject.models.User
 import com.example.finalproject.utils.Resource
 import com.example.finalproject.repositories.AuthRepositoryImp
 import com.google.firebase.auth.FirebaseUser
@@ -22,6 +24,9 @@ open class AuthViewModel @Inject constructor(
     private val _signupState = MutableLiveData<Resource<FirebaseUser>?>(null)
     val signupState: LiveData<Resource<FirebaseUser>?> = _signupState
 
+    private val _currentUserState = MutableLiveData<Resource<User>?>(null)
+    val currentUserState: LiveData<Resource<User>?> = _currentUserState
+
     val currentUser: FirebaseUser?
         get() = repository.currentUser
 
@@ -30,16 +35,23 @@ open class AuthViewModel @Inject constructor(
             _loginState.value = Resource.Success(repository.currentUser!!)
         }
     }
+    fun getCurrentUserDetails() = viewModelScope.launch {
+        _currentUserState.value = Resource.Loading
+        val result = repository.getCurrentUserDetails()
+        Log.d("qwerty viewmodel current user", result.toString())
+        _currentUserState.value = result
+    }
 
     fun logInUser(email: String, password: String) = viewModelScope.launch {
         _loginState.value = Resource.Loading
         val result = repository.logIn(email, password)
+        //Log.d("qwerty viewmodel login", result.toString())
         _loginState.value = result
     }
 
-    fun signUpUser(email: String, password: String) = viewModelScope.launch {
+    fun signUpUser(email: String, password: String, user: User) = viewModelScope.launch {
         _signupState.value = Resource.Loading
-        val result = repository.signUp(email, password)
+        val result = repository.signUp(email, password, user)
         _signupState.value = result
     }
 

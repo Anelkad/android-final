@@ -12,9 +12,10 @@
         android:background="@color/purple_700">
 
         <TextView
+            android:id="@+id/user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Seller"
+            android:text=""
             android:textColor="@color/purple_200"
             android:textSize="@dimen/name_title_size"
             android:textStyle="bold"
@@ -89,6 +90,12 @@
         android:text="Publish Product"/>
 
 </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
     <Button
         android:id="@+id/logOut"
