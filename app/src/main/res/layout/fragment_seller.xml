@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolBar"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/title"

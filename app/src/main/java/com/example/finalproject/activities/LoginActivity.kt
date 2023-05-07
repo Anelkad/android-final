@@ -48,8 +48,7 @@ class LoginActivity : BaseActivity() {
                 }
                 is Resource.Success -> {
                     hideWaitDialog()
-                    val user = it.getSuccessResult()
-                    //Log.d("qwerty login", user.email!!)
+                    //Log.d("qwerty login", "user.email!!")
                     Toast.makeText(this, resources.getString(R.string.successLogIn),Toast.LENGTH_LONG)
                         .show()
                     startMainActivity()

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_productDetailsFragment_to_commentProductFragment"
             app:destination="@id/commentProductFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/commentProductFragment"

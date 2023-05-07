@@ -37,11 +37,8 @@ class SellerFragment : BaseFragment(){
         savedInstanceState: Bundle?
     ): View? {
         authViewModel.getCurrentUserDetails()
-        return inflater.inflate(R.layout.fragment_seller, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentSellerBinding.bind(view)
+        binding = FragmentSellerBinding.inflate(inflater,container,false)
 
         authViewModel.currentUserState.observe(viewLifecycleOwner, Observer {
             when(it){
@@ -66,32 +63,7 @@ class SellerFragment : BaseFragment(){
         })
 
         binding.publishButton.setOnClickListener {
-            if (validateProductFields()){
-                val product = Product(
-                    title,
-                    description,
-                    imageUrl,
-                    price.toInt()
-                )
-                productViewModel.addProduct(product)
-                productViewModel.addProductState.observe(viewLifecycleOwner, Observer{
-                    when(it){
-                        is Resource.Failure -> {
-                            hideWaitDialog()
-                            showSnackBar("Can't add product!",true)
-                        }
-                        is Resource.Loading -> {
-                            showWaitDialog()
-                        }
-                        is Resource.Success -> {
-                            hideWaitDialog()
-                            clearFields()
-                            showSnackBar("Product \"${product.title}\" added!",false)
-                        }
-                        else -> Unit
-                    }
-                })
-            }
+            if (validateProductFields()) publishProduct()
         }
 
         binding.logOut.setOnClickListener {
@@ -100,6 +72,35 @@ class SellerFragment : BaseFragment(){
             startActivity(intent)
             activity?.finish()
         }
+
+        return binding.root
+    }
+
+    private fun publishProduct(){
+        val product = Product(
+            title,
+            description,
+            imageUrl,
+            price.toInt()
+        )
+        productViewModel.addProduct(product)
+        productViewModel.addProductState.observe(viewLifecycleOwner, Observer{
+            when(it){
+                is Resource.Failure -> {
+                    hideWaitDialog()
+                    showSnackBar("Can't add product!",true)
+                }
+                is Resource.Loading -> {
+                    showWaitDialog()
+                }
+                is Resource.Success -> {
+                    hideWaitDialog()
+                    clearFields()
+                    showSnackBar("Product \"${product.title}\" added!",false)
+                }
+                else -> Unit
+            }
+        })
     }
 
     private fun validateProductFields(): Boolean{
