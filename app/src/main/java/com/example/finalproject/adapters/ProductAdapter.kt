@@ -19,8 +19,10 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
     }
 
     inner class HolderProduct(itemView: View): RecyclerView.ViewHolder(itemView){
+        val id = binding.id
         val title = binding.title
         val price = binding.price
+        val rating = binding.rating
         val image = binding.imageView
         val addProduct = binding.addProductButton
         val itemView = binding.itemView
@@ -41,9 +43,10 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
         val imageUrl = product.imageUrl
         val rating = product.rating.toString()
 
-        binding.title.text = title
-        binding.price.text = "${price} тенге"
-        binding.rating.text = "Рейтинг: ${rating}"
+        holder.id.text = id
+        holder.title.text = title
+        holder.price.text = "${price} тенге"
+        holder.rating.text = "Рейтинг: ${rating}"
 
         Glide
             .with(holder.image.context)
@@ -52,7 +55,6 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
             .error(R.drawable.baseline_image_not_supported_24)
             .into(holder.image)
 
-        holder.itemView.tag = product
         holder.itemView.setOnClickListener { onItemClickListener?.let { it(id) } }
 
     }

@@ -35,7 +35,7 @@ class SellerFragment : BaseFragment(){
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         authViewModel.getCurrentUserDetails()
 
         binding = FragmentSellerBinding.inflate(inflater,container,false)

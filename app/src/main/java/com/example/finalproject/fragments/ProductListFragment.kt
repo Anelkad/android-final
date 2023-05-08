@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.finalproject.R
 import com.example.finalproject.adapters.ProductAdapter
@@ -31,14 +31,14 @@ class ProductListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         productList = ArrayList()
         productAdapter = ProductAdapter(productList)
 
         productViewModel.getProductList()
 
         binding = FragmentProductListBinding.inflate(inflater,container, false)
-        binding.listView.layoutManager = GridLayoutManager(requireContext(),2)
+        binding.listView.layoutManager = StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL)
         binding.listView.adapter = productAdapter
 
         productAdapter.setOnItemClickListener {
@@ -56,7 +56,7 @@ class ProductListFragment : Fragment() {
             if (!it.isNullOrEmpty()) productList.addAll(it)
             binding.progressBar.isVisible = productList.size == 0
             productAdapter.notifyDataSetChanged()
-            Log.d("Fragment product list", productList.size.toString())
+            //Log.d("Fragment product list", productList.size.toString())
         })
 
         return binding.root

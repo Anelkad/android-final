@@ -33,10 +33,10 @@ class ProductRepositoryImp @Inject constructor(
         try {
             firebase.getReference(PRODUCTS).child(id).get()
                 .addOnSuccessListener {
-                    if (it.exists()){
-                        val product = it.getValue(Product::class.java)!!
+                    val product = it.getValue(Product::class.java)!!
                         resource = Resource.Success(product)
-                    }}
+                        Log.d("product repository", product.id)
+                    }
                 .await()
         }
         catch (e: Exception){
@@ -56,11 +56,11 @@ class ProductRepositoryImp @Inject constructor(
                     val product = ds.getValue(Product::class.java)
                     if (product != null) {
                         productList.add(product)
-                        Log.d("repository product add", product.title)
+                        //Log.d("repository product add", product.title)
                     }
                 }
                 this@callbackFlow.trySendBlocking(Resource.Success(productList))
-                Log.d("repository product list", productList.size.toString())
+                //Log.d("repository product list", productList.size.toString())
             }
             override fun onCancelled(error: DatabaseError) {
                 this@callbackFlow.trySendBlocking(Resource.Failure(error.toException()))
@@ -73,6 +73,7 @@ class ProductRepositoryImp @Inject constructor(
             firebase.getReference(PRODUCTS)
                 .removeEventListener(postListener)
         }
+        Log.d("qwerty await close","done")
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.finalproject.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,17 +25,16 @@ class ProductDetailsFragment : Fragment() {
     val productViewModel by viewModels<ProductViewModel>()
     val arg: ProductDetailsFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        productViewModel.getProduct(arg.id)
-        super.onCreate(savedInstanceState)
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        productViewModel.getProduct(arg.id)
+        Log.d("product detail fragment", arg.id)
 
         binding = FragmentProductDetailsBinding.inflate(inflater,container, false)
+
         productViewModel.productDetailState.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Failure -> {
@@ -44,7 +44,6 @@ class ProductDetailsFragment : Fragment() {
                     binding.progressBar.isVisible = true
                 }
                 is Resource.Success -> {
-
                     binding.progressBar.isVisible = false
                     val product = it.getSuccessResult()
                     binding.title.text = product.title
@@ -53,7 +52,7 @@ class ProductDetailsFragment : Fragment() {
                     binding.rating.text = product.rating.toString()
 
                     Glide
-                        .with(requireContext())
+                        .with(this)
                         .load(product.imageUrl)
                         .placeholder(R.drawable.progress_animation)
                         .error(R.drawable.baseline_image_not_supported_24)
