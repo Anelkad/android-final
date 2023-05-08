@@ -5,6 +5,7 @@
     <color name="purple_700">#70378F</color>
     <color name="black">#FF000000</color>
     <color name="gray">#404040</color>
+    <color name="light_gray">#EAEAEA</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorSnackBarError">#EE6C2A69</color>

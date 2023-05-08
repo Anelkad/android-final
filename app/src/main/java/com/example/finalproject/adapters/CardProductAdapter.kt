@@ -6,30 +6,29 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.finalproject.R
+import com.example.finalproject.databinding.CardItemBinding
 import com.example.finalproject.databinding.ProductItemBinding
 import com.example.finalproject.models.CardProduct
-import com.example.finalproject.models.Product
 
-class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
+class CardProductAdapter: RecyclerView.Adapter<CardProductAdapter.HolderProduct> {
 
-    lateinit var binding: ProductItemBinding
-    var productList: ArrayList<Product>
+    lateinit var binding: CardItemBinding
+    var productList: ArrayList<CardProduct>
 
-    constructor(productList: ArrayList<Product>) : super() {
+    constructor(productList: ArrayList<CardProduct>) : super() {
         this.productList = productList
     }
 
     inner class HolderProduct(itemView: View): RecyclerView.ViewHolder(itemView){
         val title = binding.title
         val price = binding.price
-        val rating = binding.rating
         val image = binding.imageView
-        val addProduct = binding.addProductButton
+        val count = binding.count
         val itemView = binding.itemView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderProduct {
-        binding = ProductItemBinding.inflate(
+        binding = CardItemBinding.inflate(
             LayoutInflater
             .from(parent.context),parent,false)
         return HolderProduct(binding.root)
@@ -40,12 +39,12 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
         val id = product.id
         val title = product.title
         val price = product.price
+        val count = product.count
         val imageUrl = product.imageUrl
-        val rating = product.rating.toString()
 
         holder.title.text = title
         holder.price.text = "${price} тенге"
-        holder.rating.text = "Рейтинг: ${rating}"
+        holder.count.text = count.toString()
 
         Glide
             .with(holder.image.context)
@@ -54,10 +53,7 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
             .error(R.drawable.baseline_image_not_supported_24)
             .into(holder.image)
 
-        holder.itemView.setOnClickListener { onItemClickListener?.let { it(id) } }
-        holder.addProduct.setOnClickListener {
-            onButtonClickListener?.let { it(CardProduct(id,title,imageUrl,price)) }
-        }
+        //holder.itemView.setOnClickListener { onItemClickListener?.let { it(id) } }
 
     }
 

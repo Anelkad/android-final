@@ -16,11 +16,12 @@ import com.example.finalproject.R
 import com.example.finalproject.adapters.ProductAdapter
 import com.example.finalproject.databinding.FragmentProductListBinding
 import com.example.finalproject.models.Product
+import com.example.finalproject.utils.Resource
 import com.example.finalproject.viewmodels.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProductListFragment : Fragment() {
+class ProductListFragment : BaseFragment() {
 
     lateinit var binding: FragmentProductListBinding
     lateinit var productList: ArrayList<Product>
@@ -49,6 +50,25 @@ class ProductListFragment : Fragment() {
                 R.id.action_productListFragment_to_productDetailsFragment,
                 bundle
             )
+        }
+        productAdapter.setOnButtonClickListener { product ->
+            productViewModel.addProductToCard(product)
+            productViewModel.addProductToCardState.observe(viewLifecycleOwner, Observer{
+                when(it){
+                    is Resource.Failure -> {
+                        hideWaitDialog()
+                        showSnackBar("Can't add product!",true)
+                    }
+                    is Resource.Loading -> {
+                        showWaitDialog()
+                    }
+                    is Resource.Success -> {
+                        hideWaitDialog()
+                        showSnackBar("Product ${it.getSuccessResult().title} added to card!",false)
+                    }
+                    else -> Unit
+                }
+            })
         }
 
         productViewModel.productList.observe(viewLifecycleOwner, Observer {

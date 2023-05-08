@@ -1,9 +1,14 @@
 package com.example.finalproject.repositories
 
 import android.util.Log
+import com.example.finalproject.models.CardProduct
 import com.example.finalproject.models.Product
+import com.example.finalproject.utils.CARD
 import com.example.finalproject.utils.PRODUCTS
 import com.example.finalproject.utils.Resource
+import com.example.finalproject.utils.USERS
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,9 +22,12 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class ProductRepositoryImp @Inject constructor(
-   val firebase: FirebaseDatabase
+    val auth: FirebaseAuth,
+    val firebase: FirebaseDatabase
 ): ProductRepository {
 
+    override val currentUser: FirebaseUser?
+        get() = auth.currentUser
     override suspend fun addProduct(product: Product): Resource<Product> {
         val database = firebase.getReference(PRODUCTS)
         val id = database.push().key
@@ -77,11 +85,70 @@ class ProductRepositoryImp @Inject constructor(
         Log.d("qwerty await close","done")
     }
 
+    override fun getCardProductList() = callbackFlow{
+        var productList = ArrayList<CardProduct>()
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                productList.clear()
+                for (ds in snapshot.children) {
+                    val product = ds.getValue(CardProduct::class.java)
+                    if (product != null) {
+                        productList.add(product)
+                        //Log.d("repository card product add", product.title)
+                    }
+                }
+                this@callbackFlow.trySendBlocking(Resource.Success(productList))
+                //Log.d("repository card product list", productList.size.toString())
+            }
+            override fun onCancelled(error: DatabaseError) {
+                this@callbackFlow.trySendBlocking(Resource.Failure(error.toException()))
+            }
+        }
+        firebase.getReference(USERS).child(currentUser!!.uid)
+            .child(CARD)
+            .addValueEventListener(postListener)
+
+        awaitClose {
+            firebase.getReference(USERS).child(CARD)
+                .removeEventListener(postListener)
+        }
+        Log.d("qwerty await close","done")
+    }
+
+    override suspend fun addProductToCard(cardProduct: CardProduct): Resource<CardProduct> {
+        var resource: Resource<CardProduct> = Resource.Loading
+
+        try {
+            val productRef = firebase.getReference(USERS)
+                .child(currentUser!!.uid).child(CARD).child(cardProduct.id)
+
+            productRef.get()
+                .addOnSuccessListener {
+                    if (it.exists()) {
+                        cardProduct.addCount()
+                    }
+                    productRef.setValue(cardProduct)
+                    resource = Resource.Success(cardProduct)
+                }
+                .await()
+            }
+        catch (e: Exception){
+            e.printStackTrace()
+            resource = Resource.Failure(e)
+        }
+        return resource
+    }
+
 }
 
 interface ProductRepository{
+
+    val currentUser: FirebaseUser?
     suspend fun addProduct(product: Product): Resource<Product>
     suspend fun getProductDetails(id: String): Resource<Product>
     fun getProductList(): Flow<Resource<ArrayList<Product>>>
+    fun getCardProductList(): Flow<Resource<ArrayList<CardProduct>>>
+    suspend fun addProductToCard(product: CardProduct): Resource<CardProduct>
 
 }

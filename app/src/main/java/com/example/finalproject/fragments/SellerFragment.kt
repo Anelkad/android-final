@@ -38,7 +38,7 @@ class SellerFragment : BaseFragment(){
         authViewModel.getCurrentUserDetails()
 
         binding = FragmentSellerBinding.inflate(inflater,container,false)
-
+        //todo изменить currentUserState через flow как в списках recycler view
         authViewModel.currentUserState.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Failure -> {

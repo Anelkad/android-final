@@ -21,13 +21,24 @@
             />
     </androidx.appcompat.widget.Toolbar>
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolBar"
+        android:scrollbarThumbVertical="@color/purple_700">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar"
         android:padding="@dimen/padding"
-        />
+        tools:listitem="@layout/card_item"/>
 
     <Button
         android:id="@+id/purchaseButton"
@@ -35,8 +46,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
         android:text="Purchase"
-        android:layout_below="@+id/listView"
-        android:layout_centerInParent="true"/>
+        android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:indeterminateTint="@color/purple_700"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ class AuthRepositoryImp @Inject constructor(
     val auth: FirebaseAuth,
     val firebase: FirebaseDatabase
 ): AuthRepository {
+
     override val currentUser: FirebaseUser?
         get() = auth.currentUser
 
@@ -70,6 +71,7 @@ class AuthRepositoryImp @Inject constructor(
 }
 
 interface AuthRepository {
+
     val currentUser: FirebaseUser?
     suspend fun logIn(email: String, password: String): Resource<FirebaseUser>
     suspend fun signUp(email: String, password: String, user: User): Resource<FirebaseUser>
