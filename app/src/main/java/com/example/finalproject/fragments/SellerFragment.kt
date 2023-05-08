@@ -24,7 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SellerFragment : BaseFragment(){
 
     val authViewModel by viewModels<AuthViewModel>()
-    val productViewModel by viewModels<ProductViewModel>()
     lateinit var binding: FragmentSellerBinding
 
     lateinit var title: String
@@ -77,6 +76,7 @@ class SellerFragment : BaseFragment(){
     }
 
     private fun publishProduct(){
+        val productViewModel by viewModels<ProductViewModel>()
         val product = Product(
             title,
             description,

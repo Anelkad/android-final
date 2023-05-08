@@ -28,16 +28,17 @@ open class BaseFragment: Fragment() {
     }
 
     fun showWaitDialog(){
-        waitDialog = Dialog(requireActivity())
-        waitDialog.setContentView(R.layout.wait_dialog)
+        if (!this::waitDialog.isInitialized) {
+            waitDialog = Dialog(requireActivity())
+            waitDialog.setContentView(R.layout.wait_dialog)
 
-        waitDialog.setCancelable(false)
-        waitDialog.setCanceledOnTouchOutside(false)
-
-        waitDialog.show()
+            waitDialog.setCancelable(false)
+            waitDialog.setCanceledOnTouchOutside(false)
+        }
+        if (!waitDialog.isShowing) waitDialog.show()
     }
 
     fun hideWaitDialog(){
-        if (this::waitDialog.isInitialized) waitDialog.dismiss()
+        if (this::waitDialog.isInitialized or waitDialog.isShowing) waitDialog.dismiss()
     }
 }

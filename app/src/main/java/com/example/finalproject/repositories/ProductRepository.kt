@@ -28,7 +28,7 @@ class ProductRepositoryImp @Inject constructor(
         return Resource.Success(product)
     }
 
-    override suspend fun getProduct(id: String): Resource<Product> {
+    override suspend fun getProductDetails(id: String): Resource<Product> {
         var resource: Resource<Product> = Resource.Loading
         try {
             firebase.getReference(PRODUCTS).child(id).get()
@@ -36,6 +36,7 @@ class ProductRepositoryImp @Inject constructor(
                     val product = it.getValue(Product::class.java)!!
                         resource = Resource.Success(product)
                         Log.d("product repository", product.id)
+                        Log.d("product repository", product.title)
                     }
                 .await()
         }
@@ -80,7 +81,7 @@ class ProductRepositoryImp @Inject constructor(
 
 interface ProductRepository{
     suspend fun addProduct(product: Product): Resource<Product>
-    suspend fun getProduct(id: String): Resource<Product>
+    suspend fun getProductDetails(id: String): Resource<Product>
     fun getProductList(): Flow<Resource<ArrayList<Product>>>
 
 }

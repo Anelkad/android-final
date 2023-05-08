@@ -19,7 +19,6 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
     }
 
     inner class HolderProduct(itemView: View): RecyclerView.ViewHolder(itemView){
-        val id = binding.id
         val title = binding.title
         val price = binding.price
         val rating = binding.rating
@@ -43,7 +42,6 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
         val imageUrl = product.imageUrl
         val rating = product.rating.toString()
 
-        holder.id.text = id
         holder.title.text = title
         holder.price.text = "${price} тенге"
         holder.rating.text = "Рейтинг: ${rating}"

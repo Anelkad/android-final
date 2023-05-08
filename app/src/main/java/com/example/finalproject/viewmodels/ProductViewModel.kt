@@ -32,10 +32,11 @@ class ProductViewModel @Inject constructor(
         _addProductState.value = result
     }
 
-    fun getProduct(id: String) = viewModelScope.launch {
+    fun getProductDetails(id: String) = viewModelScope.launch {
         _productDetailState.value = Resource.Loading
-        val result = repository.getProduct(id)
+        val result = repository.getProductDetails(id)
         _productDetailState.value = result
+        Log.d("product view model", result.toString())
     }
 
     fun getProductList() = viewModelScope.launch {

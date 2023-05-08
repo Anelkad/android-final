@@ -21,8 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
 
     lateinit var binding: FragmentProductDetailsBinding
-
-    val productViewModel by viewModels<ProductViewModel>()
     val arg: ProductDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -30,26 +28,30 @@ class ProductDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        productViewModel.getProduct(arg.id)
+        val productViewModel by viewModels<ProductViewModel>()
+
+        productViewModel.getProductDetails(arg.id)
         Log.d("product detail fragment", arg.id)
 
         binding = FragmentProductDetailsBinding.inflate(inflater,container, false)
-
+        //todo productDetailState loading зависает через раз
         productViewModel.productDetailState.observe(viewLifecycleOwner, Observer {
+            Log.d("product detail state", it.toString())
             when(it){
                 is Resource.Failure -> {
                     binding.progressBar.isVisible = false
                 }
                 is Resource.Loading -> {
                     binding.progressBar.isVisible = true
+                    Log.d("progress bar", "visible")
                 }
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
                     val product = it.getSuccessResult()
                     binding.title.text = product.title
-                    binding.id.text = product.id
-                    binding.price.text = product.price.toString()
-                    binding.rating.text = product.rating.toString()
+                    binding.description.text = product.description
+                    binding.price.text = "Цена: ${ product.price } тг"
+                    binding.rating.text = "Рейтинг: ${product.rating}"
 
                     Glide
                         .with(this)
