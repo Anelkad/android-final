@@ -2,7 +2,6 @@ package com.example.finalproject.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +12,13 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.finalproject.R
 import com.example.finalproject.databinding.FragmentProductDetailsBinding
+import com.example.finalproject.models.CardProduct
 import com.example.finalproject.utils.Resource
 import com.example.finalproject.viewmodels.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProductDetailsFragment : Fragment() {
+class ProductDetailsFragment : BaseFragment() {
 
     lateinit var binding: FragmentProductDetailsBinding
     val arg: ProductDetailsFragmentArgs by navArgs()
@@ -35,9 +35,9 @@ class ProductDetailsFragment : Fragment() {
 
         binding = FragmentProductDetailsBinding.inflate(inflater,container, false)
         //todo productDetailState loading зависает через раз
-        productViewModel.productDetailState.observe(viewLifecycleOwner, Observer {
-            Log.d("product detail state", it.toString())
-            when(it){
+        productViewModel.productDetailState.observe(viewLifecycleOwner, Observer { resource ->
+            Log.d("product detail state", resource.toString())
+            when(resource){
                 is Resource.Failure -> {
                     binding.progressBar.isVisible = false
                 }
@@ -47,7 +47,8 @@ class ProductDetailsFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
-                    val product = it.getSuccessResult()
+                    val product = resource.getSuccessResult()
+                    binding.productDetails.isVisible = true
                     binding.title.text = product.title
                     binding.description.text = product.description
                     binding.price.text = "Цена: ${ product.price } тг"
@@ -59,6 +60,27 @@ class ProductDetailsFragment : Fragment() {
                         .placeholder(R.drawable.progress_animation)
                         .error(R.drawable.baseline_image_not_supported_24)
                         .into(binding.imageView)
+
+                    binding.addToCard.setOnClickListener {
+                        productViewModel.addProductToCard(CardProduct(product))
+                        productViewModel.addProductToCardState.observe(viewLifecycleOwner, Observer{ cardProductResource ->
+                            when(cardProductResource){
+                                is Resource.Failure -> {
+                                    //hideWaitDialog()
+                                    showSnackBar("Can't add product!",true)
+                                }
+                                is Resource.Loading -> {
+                                    //showWaitDialog()
+                                }
+                                is Resource.Success -> {
+                                    //hideWaitDialog()
+                                    showSnackBar("Product ${cardProductResource.getSuccessResult().title} added to card!",false)
+                                }
+                                else -> Unit
+                            }
+                        })
+                    }
+
                 }
                 else -> Unit
             }

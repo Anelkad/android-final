@@ -21,7 +21,16 @@ class CardProduct {
         this.price = price
     }
 
+    constructor(
+        product: Product
+    ){
+        this.id = product.id
+        this.title = product.title
+        this.imageUrl = product.imageUrl
+        this.price = product.price
+    }
+
     fun addCount() = this.count++
 
-    fun removeCount() = if (count>0) this.count-- else Unit
+    fun removeCount() = this.count--
 }

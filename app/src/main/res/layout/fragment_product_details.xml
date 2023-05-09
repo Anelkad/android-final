@@ -23,12 +23,14 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/productDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolBar"
         android:scrollbarThumbVertical="@color/purple_700"
         android:scrollbarSize="3dp"
-        android:layout_marginEnd="2dp">
+        android:layout_marginEnd="2dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,6 +60,14 @@
         android:textColor="@color/gray"
         android:textStyle="italic"
         android:paddingHorizontal="10dp"/>
+
+    <Button
+        android:id="@+id/addToCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:text="Add to card"
+        android:textSize="@dimen/button_text_size"/>
 
     <TextView
         android:id="@+id/description"

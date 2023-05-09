@@ -56,14 +56,14 @@ class ProductListFragment : BaseFragment() {
             productViewModel.addProductToCardState.observe(viewLifecycleOwner, Observer{
                 when(it){
                     is Resource.Failure -> {
-                        hideWaitDialog()
+                        //hideWaitDialog()
                         showSnackBar("Can't add product!",true)
                     }
                     is Resource.Loading -> {
-                        showWaitDialog()
+                        //showWaitDialog()
                     }
                     is Resource.Success -> {
-                        hideWaitDialog()
+                        //hideWaitDialog()
                         showSnackBar("Product ${it.getSuccessResult().title} added to card!",false)
                     }
                     else -> Unit
@@ -73,8 +73,8 @@ class ProductListFragment : BaseFragment() {
 
         productViewModel.productList.observe(viewLifecycleOwner, Observer {
             productList.clear()
-            if (!it.isNullOrEmpty()) productList.addAll(it)
-            binding.progressBar.isVisible = productList.size == 0
+            if (it!=null) productList.addAll(it)
+            binding.progressBar.isVisible = productList.isEmpty()
             productAdapter.notifyDataSetChanged()
             //Log.d("Fragment product list", productList.size.toString())
         })

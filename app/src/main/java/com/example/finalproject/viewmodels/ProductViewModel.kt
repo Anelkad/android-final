@@ -53,6 +53,16 @@ class ProductViewModel @Inject constructor(
         Log.d("product view model", result.toString())
     }
 
+    fun addCountCardProduct(id: String) = viewModelScope.launch {
+        repository.addCountCardProduct(id)
+        //Log.d("product view model", result.toString())
+    }
+
+    fun removeCountCardProduct(id: String) = viewModelScope.launch {
+        repository.removeCountCardProduct(id)
+        //Log.d("product view model", result.toString())
+    }
+
     fun getProductList() = viewModelScope.launch {
             repository.getProductList().collect {
                 when (it) {

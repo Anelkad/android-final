@@ -24,6 +24,9 @@ class CardProductAdapter: RecyclerView.Adapter<CardProductAdapter.HolderProduct>
         val price = binding.price
         val image = binding.imageView
         val count = binding.count
+        val addCount = binding.countAddButton
+        val removeCount = binding.countRemoveButton
+        val totalCount = binding.totalCount
         val itemView = binding.itemView
     }
 
@@ -46,6 +49,8 @@ class CardProductAdapter: RecyclerView.Adapter<CardProductAdapter.HolderProduct>
         holder.price.text = "${price} тенге"
         holder.count.text = count.toString()
 
+        holder.totalCount.text = "${price*count}тг"
+
         Glide
             .with(holder.image.context)
             .load(imageUrl)
@@ -54,7 +59,8 @@ class CardProductAdapter: RecyclerView.Adapter<CardProductAdapter.HolderProduct>
             .into(holder.image)
 
         //holder.itemView.setOnClickListener { onItemClickListener?.let { it(id) } }
-
+        holder.addCount.setOnClickListener { addCountClickListener?.let{it(id)} }
+        holder.removeCount.setOnClickListener { removeCountClickListener?.let{it(id)} }
     }
 
     override fun getItemCount(): Int {
@@ -63,14 +69,20 @@ class CardProductAdapter: RecyclerView.Adapter<CardProductAdapter.HolderProduct>
 
     private var onItemClickListener: ((String) -> Unit)? = null
 
+    private var addCountClickListener: ((String) -> Unit)? = null
+    private var removeCountClickListener: ((String) -> Unit)? = null
+
     fun setOnItemClickListener(listener: (String) -> Unit) {
         onItemClickListener = listener
     }
 
-    private var onButtonClickListener: ((CardProduct) -> Unit)? = null
-
-    fun setOnButtonClickListener(listener: (CardProduct) -> Unit) {
-        onButtonClickListener = listener
+    fun setOnAddButtonClickListener(listener: (String) -> Unit) {
+        addCountClickListener = listener
     }
+
+    fun setOnRemoveButtonClickListener(listener: (String) -> Unit) {
+        removeCountClickListener = listener
+    }
+
 
 }

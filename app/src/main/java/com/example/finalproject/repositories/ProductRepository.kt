@@ -106,7 +106,7 @@ class ProductRepositoryImp @Inject constructor(
             }
         }
         firebase.getReference(USERS).child(currentUser!!.uid)
-            .child(CARD)
+            .child(CARD).orderByChild("id")
             .addValueEventListener(postListener)
 
         awaitClose {
@@ -140,6 +140,47 @@ class ProductRepositoryImp @Inject constructor(
         return resource
     }
 
+    override suspend fun addCountCardProduct(id: String) {
+        try {
+            val productRef = firebase.getReference(USERS)
+                .child(currentUser!!.uid).child(CARD).child(id)
+
+            productRef.get()
+                .addOnSuccessListener {
+                    val product = it.getValue(CardProduct::class.java)!!
+                    product.addCount()
+                    productRef.setValue(product)
+                    //Log.d("card product repository", product.id)
+                    //Log.d("card product repository", product.title)
+                }
+                .await()
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    override suspend fun removeCountCardProduct(id: String) {
+        try {
+            val productRef = firebase.getReference(USERS)
+                .child(currentUser!!.uid).child(CARD).child(id)
+
+            productRef.get()
+                .addOnSuccessListener {
+                    val product = it.getValue(CardProduct::class.java)!!
+                    product.removeCount()
+                    if (product.count<=0) productRef.removeValue()
+                    else productRef.setValue(product)
+                    // Log.d("card product repository", product.id)
+                    //Log.d("card product repository", product.title)
+                }
+                .await()
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
 }
 
 interface ProductRepository{
@@ -150,5 +191,7 @@ interface ProductRepository{
     fun getProductList(): Flow<Resource<ArrayList<Product>>>
     fun getCardProductList(): Flow<Resource<ArrayList<CardProduct>>>
     suspend fun addProductToCard(product: CardProduct): Resource<CardProduct>
+    suspend fun addCountCardProduct(id: String)
+    suspend fun removeCountCardProduct(id: String)
 
 }

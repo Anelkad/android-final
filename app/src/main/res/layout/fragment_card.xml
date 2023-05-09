@@ -21,11 +21,25 @@
             />
     </androidx.appcompat.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/emptyCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="italic"
+        android:layout_marginVertical="10dp"
+        android:text="Card is empty"
+        android:layout_below="@+id/toolBar"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
 
     <ScrollView
+        android:id="@+id/cardList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolBar"
+        android:visibility="gone"
         android:scrollbarThumbVertical="@color/purple_700">
 
     <LinearLayout
@@ -40,11 +54,20 @@
         android:padding="@dimen/padding"
         tools:listitem="@layout/card_item"/>
 
+        <TextView
+            android:id="@+id/totalCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginVertical="10dp"
+            android:textColor="@color/purple_700"/>
+
     <Button
         android:id="@+id/purchaseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
         android:text="Purchase"
         android:layout_gravity="center_horizontal"/>
 
