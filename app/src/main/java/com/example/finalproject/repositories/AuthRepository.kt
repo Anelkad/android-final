@@ -1,7 +1,7 @@
 package com.example.finalproject.repositories
 
-import android.util.Log
 import com.example.finalproject.models.User
+import com.example.finalproject.utils.PRODUCTS
 import com.example.finalproject.utils.Resource
 import com.example.finalproject.utils.USERS
 import java.lang.Exception
@@ -11,6 +11,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -50,21 +54,25 @@ class AuthRepositoryImp @Inject constructor(
         auth.signOut()
     }
 
-    override suspend fun getCurrentUserDetails(): Resource<User> {
-        var resource: Resource<User> = Resource.Loading
-        try {
-        firebase.getReference(USERS).child(currentUser!!.uid).get()
-            .addOnSuccessListener {
-                if (it.exists()){val user = it.getValue(User::class.java)!!
-                resource = Resource.Success(user)
-            }}
-            .await()
+    override fun getCurrentUserDetails() = callbackFlow{
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(User::class.java)
+                if (user!=null) this@callbackFlow.trySendBlocking(Resource.Success(user))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                this@callbackFlow.trySendBlocking(Resource.Failure(error.toException()))
+            }
         }
-        catch (e: Exception){
-            e.printStackTrace()
-            resource = Resource.Failure(e)
+
+        firebase.getReference(USERS).child(currentUser!!.uid)
+            .addValueEventListener(postListener)
+
+        awaitClose {
+            if (currentUser!=null)firebase.getReference(USERS).child(currentUser!!.uid)
+                .removeEventListener(postListener)
         }
-        return resource
     }
 
 
@@ -76,5 +84,5 @@ interface AuthRepository {
     suspend fun logIn(email: String, password: String): Resource<FirebaseUser>
     suspend fun signUp(email: String, password: String, user: User): Resource<FirebaseUser>
     fun logOut()
-    suspend fun getCurrentUserDetails(): Resource<User>
+    fun getCurrentUserDetails(): Flow<Resource<User>>
 }

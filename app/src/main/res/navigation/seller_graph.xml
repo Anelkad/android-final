@@ -9,5 +9,16 @@
         android:id="@+id/sellerFragment"
         android:name="com.example.finalproject.fragments.SellerFragment"
         android:label="fragment_seller"
-        tools:layout="@layout/fragment_seller" />
+        tools:layout="@layout/fragment_seller" >
+        <action
+            android:id="@+id/action_sellerFragment_to_purchaseHistoryFragment"
+            app:destination="@id/purchaseHistoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/purchaseHistoryFragment"
+        android:name="com.example.finalproject.fragments.PurchaseHistoryFragment"
+        android:label="fragment_purchase_history"
+        tools:layout="@layout/fragment_purchase_history" />
 </navigation>

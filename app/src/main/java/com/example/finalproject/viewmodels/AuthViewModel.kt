@@ -10,6 +10,7 @@ import com.example.finalproject.utils.Resource
 import com.example.finalproject.repositories.AuthRepositoryImp
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,11 +25,8 @@ open class AuthViewModel @Inject constructor(
     private val _signupState = MutableLiveData<Resource<FirebaseUser>?>(null)
     val signupState: LiveData<Resource<FirebaseUser>?> = _signupState
 
-    private val _currentUserState = MutableLiveData<Resource<User>?>(null)
-    val currentUserState: LiveData<Resource<User>?> = _currentUserState
-
-    val currentUser: FirebaseUser?
-        get() = repository.currentUser
+    private val _currentUser = MutableLiveData<User>(null)
+    val currentUser: LiveData<User> = _currentUser
 
     init {
         if (repository.currentUser != null) {
@@ -36,9 +34,17 @@ open class AuthViewModel @Inject constructor(
         }
     }
     fun getCurrentUserDetails() = viewModelScope.launch {
-        _currentUserState.value = Resource.Loading
-        val result = repository.getCurrentUserDetails()
-        _currentUserState.value = result
+        repository.getCurrentUserDetails().collect{
+            when (it) {
+                is Resource.Success -> {
+                    _currentUser.value = it.getSuccessResult()
+                }
+                is Resource.Failure -> {
+                    Log.d("user details view model", "error")
+                }
+                else -> Unit
+            }
+        }
     }
 
     fun logInUser(email: String, password: String) = viewModelScope.launch {

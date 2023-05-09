@@ -11,6 +11,7 @@ import com.example.finalproject.models.Purchase
 import com.example.finalproject.repositories.ProductRepositoryImp
 import com.example.finalproject.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.security.CryptoPrimitive
 import javax.inject.Inject
@@ -32,8 +33,12 @@ class ProductViewModel @Inject constructor(
     private val _cardProductList = MutableLiveData<ArrayList<CardProduct>>(null)
     val cardProductList: LiveData<ArrayList<CardProduct>> = _cardProductList
 
-    private val _productDetailState = MutableLiveData<Resource<Product>?>(null)
-    val productDetailState: LiveData<Resource<Product>?> = _productDetailState
+    private val _purchaseList = MutableLiveData<ArrayList<Purchase>>(null)
+    val purchaseList: LiveData<ArrayList<Purchase>> = _purchaseList
+
+
+    private val _productDetail = MutableLiveData<Product>(null)
+    val productDetail: LiveData<Product> = _productDetail
 
     private val _purchaseState = MutableLiveData<Resource<Purchase>?>(null)
     val purchaseState: LiveData<Resource<Purchase>?> = _purchaseState
@@ -55,12 +60,6 @@ class ProductViewModel @Inject constructor(
         val result = repository.purchase(purchase)
         _purchaseState.value = result
     }
-    fun getProductDetails(id: String) = viewModelScope.launch {
-        _productDetailState.value = Resource.Loading
-        val result = repository.getProductDetails(id)
-        _productDetailState.value = result
-        Log.d("product view model", result.toString())
-    }
 
     fun addCountCardProduct(id: String) = viewModelScope.launch {
         repository.addCountCardProduct(id)
@@ -76,6 +75,20 @@ class ProductViewModel @Inject constructor(
         repository.clearCard()
     }
 
+    fun getProductDetails(id: String) = viewModelScope.launch {
+        repository.getProductDetails(id).collect{
+            when (it) {
+                is Resource.Success -> {
+                    _productDetail.value = it.getSuccessResult()
+                }
+                is Resource.Failure -> {
+                    Log.d("product detail view model", "error")
+                }
+                else -> Unit
+            }
+        }
+    }
+
     fun getProductList() = viewModelScope.launch {
             repository.getProductList().collect {
                 when (it) {
@@ -83,12 +96,26 @@ class ProductViewModel @Inject constructor(
                         _productList.value = it.getSuccessResult()
                     }
                     is Resource.Failure -> {
-                        Log.d("product view model", "error")
+                        Log.d("product list view model", "error")
                     }
                     else -> Unit
                 }
             }
         }
+
+    fun getPurchaseList() = viewModelScope.launch {
+        repository.getPurchaseList().collect {
+            when (it) {
+                is Resource.Success -> {
+                    _purchaseList.value = it.getSuccessResult()
+                }
+                is Resource.Failure -> {
+                    Log.d("product list view model", "error")
+                }
+                else -> Unit
+            }
+        }
+    }
 
     fun getCardProductList() = viewModelScope.launch {
         repository.getCardProductList().collect {
@@ -97,7 +124,7 @@ class ProductViewModel @Inject constructor(
                     _cardProductList.value = it.getSuccessResult()
                 }
                 is Resource.Failure -> {
-                    Log.d("product view model", "error")
+                    Log.d("card product list view model", "error")
                 }
                 else -> Unit
             }

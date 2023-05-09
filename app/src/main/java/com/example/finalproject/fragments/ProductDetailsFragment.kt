@@ -31,32 +31,19 @@ class ProductDetailsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         productViewModel.getProductDetails(arg.id)
-        Log.d("product detail fragment", arg.id)
+        //Log.d("product detail fragment", arg.id)
 
         binding = FragmentProductDetailsBinding.inflate(inflater,container, false)
-        //TODO productDetailState loading зависает через раз
-        productViewModel.productDetailState.observe(viewLifecycleOwner, Observer { resource ->
-            Log.d("product detail state", resource.toString())
-            when(resource){
-                is Resource.Failure -> {
-                    binding.progressBar.isVisible = false
-                }
-                is Resource.Loading -> {
-                    binding.progressBar.isVisible = true
-                    Log.d("progress bar", "visible")
-                }
-                is Resource.Success -> {
-                    binding.progressBar.isVisible = false
-                    val product = resource.getSuccessResult()
-                    fillProductBinding(product)
 
-                    binding.addToCard.setOnClickListener {
-                        addProductToCardObserver(product)
-                    }
+        productViewModel.productDetail.observe(viewLifecycleOwner, Observer {
+            binding.progressBar.isVisible = it==null
+            if (it!=null) {
+                val product = it
+                fillProductBinding(product)
+                binding.addToCard.setOnClickListener {
+                    addProductToCardObserver(product)
                 }
-                else -> Unit
             }
         })
 

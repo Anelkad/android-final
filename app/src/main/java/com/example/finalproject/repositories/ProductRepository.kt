@@ -7,10 +7,7 @@ import com.example.finalproject.models.Purchase
 import com.example.finalproject.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -34,23 +31,26 @@ class ProductRepositoryImp @Inject constructor(
         return Resource.Success(product)
     }
 
-    override suspend fun getProductDetails(id: String): Resource<Product> {
-        var resource: Resource<Product> = Resource.Loading
-        try {
-            firebase.getReference(PRODUCTS).child(id).get()
-                .addOnSuccessListener {
-                    val product = it.getValue(Product::class.java)!!
-                        resource = Resource.Success(product)
-                        Log.d("product repository", product.id)
-                        Log.d("product repository", product.title)
-                    }
-                .await()
+    override fun getProductDetails(id: String) = callbackFlow{
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val product = snapshot.getValue(Product::class.java)
+                if (product!=null) this@callbackFlow.trySendBlocking(Resource.Success(product))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                this@callbackFlow.trySendBlocking(Resource.Failure(error.toException()))
+            }
         }
-        catch (e: Exception){
-            e.printStackTrace()
-            resource = Resource.Failure(e)
+
+        firebase.getReference(PRODUCTS).child(id).addValueEventListener(postListener)
+
+        awaitClose {
+            firebase.getReference(PRODUCTS).child(id)
+                .removeEventListener(postListener)
         }
-        return resource
+
     }
 
     override fun getProductList() = callbackFlow{
@@ -80,7 +80,6 @@ class ProductRepositoryImp @Inject constructor(
             firebase.getReference(PRODUCTS)
                 .removeEventListener(postListener)
         }
-        Log.d("qwerty await close","done")
     }
 
     override fun getCardProductList() = callbackFlow{
@@ -156,6 +155,37 @@ class ProductRepositoryImp @Inject constructor(
         return resource
     }
 
+    override fun getPurchaseList()= callbackFlow{
+        var purchaseList = ArrayList<Purchase>()
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                purchaseList.clear()
+                for (ds in snapshot.children) {
+                    val purchase = ds.getValue(Purchase::class.java)
+                    if (purchase != null) {
+                        purchaseList.add(purchase)
+                        //Log.d("repository card product add", product.title)
+                    }
+                }
+                this@callbackFlow.trySendBlocking(Resource.Success(purchaseList))
+                //Log.d("repository card product list", productList.size.toString())
+            }
+            override fun onCancelled(error: DatabaseError) {
+                this@callbackFlow.trySendBlocking(Resource.Failure(error.toException()))
+            }
+        }
+        firebase.getReference(USERS).child(currentUser!!.uid)
+            .child(PURCHASE).orderByChild("id")
+            .addValueEventListener(postListener)
+
+        awaitClose {
+            firebase.getReference(USERS).child(currentUser!!.uid)
+                .child(PURCHASE).removeEventListener(postListener)
+        }
+        Log.d("qwerty await close","done")
+    }
+
     override suspend fun clearCard() {
         firebase.getReference(USERS)
             .child(currentUser!!.uid).child(CARD).removeValue().await()
@@ -208,11 +238,12 @@ interface ProductRepository{
 
     val currentUser: FirebaseUser?
     suspend fun addProduct(product: Product): Resource<Product>
-    suspend fun getProductDetails(id: String): Resource<Product>
+    fun getProductDetails(id: String): Flow<Resource<Product>>
     fun getProductList(): Flow<Resource<ArrayList<Product>>>
     fun getCardProductList(): Flow<Resource<ArrayList<CardProduct>>>
     suspend fun addProductToCard(product: CardProduct): Resource<CardProduct>
     suspend fun purchase(purchase: Purchase): Resource<Purchase>
+    fun getPurchaseList(): Flow<Resource<ArrayList<Purchase>>>
     suspend fun clearCard()
     suspend fun addCountCardProduct(id: String)
     suspend fun removeCountCardProduct(id: String)

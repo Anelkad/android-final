@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.finalproject.R
 import com.example.finalproject.activities.LoginActivity
 import com.example.finalproject.databinding.FragmentSellerBinding
@@ -38,26 +39,14 @@ class SellerFragment : BaseFragment(){
         authViewModel.getCurrentUserDetails()
 
         binding = FragmentSellerBinding.inflate(inflater,container,false)
-        //todo изменить currentUserState через flow как в списках recycler view
-        authViewModel.currentUserState.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Failure -> {
-                    binding.progressBar.isVisible = false
-                    //Log.d("qwerty seller", "current user fail")
-                }
-                is Resource.Loading -> {
-                    binding.progressBar.isVisible = true
-                    binding.sellerContent.isVisible = false
-                    //Log.d("qwerty seller", "current user load")
-                }
-                is Resource.Success -> {
-                    binding.progressBar.isVisible = false
-                    val user = it.getSuccessResult()
-                    //Log.d("qwerty seller", user.email)
-                    binding.user.text = "${user.role}: ${user.email}"
-                    binding.sellerContent.isVisible = user.role == "admin"
-                }
-                else -> Unit
+
+        authViewModel.currentUser.observe(viewLifecycleOwner, Observer {
+            binding.progressBar.isVisible = it==null
+            if (it!=null) {
+                val user = it
+                binding.user.text = "${user.role}: ${user.email}"
+                binding.sellerContent.isVisible = user.role == "admin"
+                binding.clientContent.isVisible = user.role == "client"
             }
         })
 
@@ -70,6 +59,10 @@ class SellerFragment : BaseFragment(){
             val intent = Intent (activity, LoginActivity::class.java)
             startActivity(intent)
             activity?.finish()
+        }
+
+        binding.purchaseHistory.setOnClickListener {
+            findNavController().navigate(R.id.action_sellerFragment_to_purchaseHistoryFragment)
         }
 
         return binding.root

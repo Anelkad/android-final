@@ -15,7 +15,9 @@
             app:destination="@id/confirmPurchaseFragment" />
         <action
             android:id="@+id/action_cardFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment" />
+            app:destination="@id/productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/confirmPurchaseFragment"

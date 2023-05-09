@@ -8,7 +8,7 @@
     <color name="light_gray">#EAEAEA</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorSnackBarError">#EE6C2A69</color>
+    <color name="colorSnackBarError">#EECC0C31</color>
     <color name="colorSnackBarSuccess">#ED0BCC2B</color>
 
 </resources>

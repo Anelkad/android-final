@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.SellerFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -23,13 +24,24 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/clientContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Publish product unavailable"
+        android:layout_marginVertical="5dp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        android:gravity="center_horizontal"/>
+
     <LinearLayout
         android:id="@+id/sellerContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar"
         android:orientation="vertical"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:visibility="gone">
 
         <EditText
@@ -96,14 +108,21 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/purchaseHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Purchase History"
+        android:layout_gravity="center"
+        android:layout_marginVertical="5dp"/>
 
     <Button
         android:id="@+id/logOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sellerContent"
         android:text="Log Out"
-        android:layout_centerHorizontal="true"/>
+        android:layout_gravity="center"/>
 
-</RelativeLayout>
+</LinearLayout>

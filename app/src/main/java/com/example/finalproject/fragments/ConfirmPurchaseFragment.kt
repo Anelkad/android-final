@@ -38,7 +38,7 @@ class ConfirmPurchaseFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("qwerty confirm", arg.purchase.totalCost.toString())
+        //Log.d("qwerty confirm", arg.purchase.totalCost.toString())
         purchase = arg.purchase
 
         val productList = purchase.products
