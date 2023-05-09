@@ -15,6 +15,7 @@ import com.example.finalproject.R
 import com.example.finalproject.adapters.CardProductAdapter
 import com.example.finalproject.databinding.FragmentCardBinding
 import com.example.finalproject.models.CardProduct
+import com.example.finalproject.models.Purchase
 import com.example.finalproject.viewmodels.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +42,16 @@ class CardFragment : BaseFragment() {
             productViewModel.removeCountCardProduct(it)
         }
 
+        productAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putString("id", it)
+            }
+            findNavController().navigate(
+                R.id.action_cardFragment_to_productDetailsFragment,
+                bundle
+            )
+        }
+
         productViewModel.getCardProductList()
         binding = FragmentCardBinding.inflate(inflater,container,false)
         binding.listView.layoutManager = LinearLayoutManager(requireContext())
@@ -61,8 +72,13 @@ class CardFragment : BaseFragment() {
         })
 
         binding.purchaseButton.setOnClickListener {
+            val purchase = Purchase(productList,productList.sumOf { it.price * it.count })
+            val bundle = Bundle().apply {
+                putSerializable("purchase", purchase)
+            }
             findNavController()
-                .navigate(R.id.action_cardFragment_to_confirmPurchaseFragment)
+                .navigate(R.id.action_cardFragment_to_confirmPurchaseFragment,
+                bundle)
         }
 
         return binding.root

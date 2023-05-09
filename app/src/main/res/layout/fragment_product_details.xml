@@ -63,11 +63,11 @@
 
     <Button
         android:id="@+id/addToCard"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/width"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+        android:layout_gravity="center_horizontal"
         android:text="Add to card"
-        android:textSize="@dimen/button_text_size"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/description"

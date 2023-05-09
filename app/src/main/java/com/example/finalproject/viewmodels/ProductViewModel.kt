@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.finalproject.models.CardProduct
 import com.example.finalproject.models.Product
+import com.example.finalproject.models.Purchase
 import com.example.finalproject.repositories.ProductRepositoryImp
 import com.example.finalproject.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,9 @@ class ProductViewModel @Inject constructor(
     private val _productDetailState = MutableLiveData<Resource<Product>?>(null)
     val productDetailState: LiveData<Resource<Product>?> = _productDetailState
 
+    private val _purchaseState = MutableLiveData<Resource<Purchase>?>(null)
+    val purchaseState: LiveData<Resource<Purchase>?> = _purchaseState
+
     fun addProduct(product: Product) = viewModelScope.launch {
         _addProductState.value = Resource.Loading
         val result = repository.addProduct(product)
@@ -46,6 +50,11 @@ class ProductViewModel @Inject constructor(
         _addProductToCardState.value = result
     }
 
+    fun purchase(purchase: Purchase) = viewModelScope.launch {
+        _purchaseState.value = Resource.Loading
+        val result = repository.purchase(purchase)
+        _purchaseState.value = result
+    }
     fun getProductDetails(id: String) = viewModelScope.launch {
         _productDetailState.value = Resource.Loading
         val result = repository.getProductDetails(id)
@@ -61,6 +70,10 @@ class ProductViewModel @Inject constructor(
     fun removeCountCardProduct(id: String) = viewModelScope.launch {
         repository.removeCountCardProduct(id)
         //Log.d("product view model", result.toString())
+    }
+
+    fun clearCard() = viewModelScope.launch {
+        repository.clearCard()
     }
 
     fun getProductList() = viewModelScope.launch {

@@ -3,10 +3,8 @@ package com.example.finalproject.repositories
 import android.util.Log
 import com.example.finalproject.models.CardProduct
 import com.example.finalproject.models.Product
-import com.example.finalproject.utils.CARD
-import com.example.finalproject.utils.PRODUCTS
-import com.example.finalproject.utils.Resource
-import com.example.finalproject.utils.USERS
+import com.example.finalproject.models.Purchase
+import com.example.finalproject.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -140,6 +138,29 @@ class ProductRepositoryImp @Inject constructor(
         return resource
     }
 
+    override suspend fun purchase(purchase: Purchase): Resource<Purchase> {
+        var resource: Resource<Purchase> = Resource.Loading
+
+        try {
+            val database = firebase.getReference(USERS)
+                .child(currentUser!!.uid).child(PURCHASE)
+            val id = database.push().key
+            purchase.putId(id!!)
+            resource = Resource.Success(purchase)
+            database.child(id).setValue(purchase).await()
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+            resource = Resource.Failure(e)
+        }
+        return resource
+    }
+
+    override suspend fun clearCard() {
+        firebase.getReference(USERS)
+            .child(currentUser!!.uid).child(CARD).removeValue().await()
+    }
+
     override suspend fun addCountCardProduct(id: String) {
         try {
             val productRef = firebase.getReference(USERS)
@@ -191,6 +212,8 @@ interface ProductRepository{
     fun getProductList(): Flow<Resource<ArrayList<Product>>>
     fun getCardProductList(): Flow<Resource<ArrayList<CardProduct>>>
     suspend fun addProductToCard(product: CardProduct): Resource<CardProduct>
+    suspend fun purchase(purchase: Purchase): Resource<Purchase>
+    suspend fun clearCard()
     suspend fun addCountCardProduct(id: String)
     suspend fun removeCountCardProduct(id: String)
 

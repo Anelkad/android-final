@@ -43,6 +43,7 @@ class ProductListFragment : BaseFragment() {
         binding.listView.adapter = productAdapter
 
         productAdapter.setOnItemClickListener {
+            //TODO мб заменить product serializable и stateflow
             val bundle = Bundle().apply {
                 putString("id", it)
             }

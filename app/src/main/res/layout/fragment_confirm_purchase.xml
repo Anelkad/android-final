@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ConfirmPurchaseFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -22,21 +23,56 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarThumbVertical="@color/purple_700"
+        android:layout_below="@+id/toolBar">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="@dimen/width"
+                android:layout_height="wrap_content"
+                android:textColor="@color/purple_700"
+                android:hint="Address"
+                android:padding="@dimen/padding"
+                android:textColorHint="@color/purple_700"
+                android:background="@drawable/edittext_bg"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_top"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar"
         android:padding="@dimen/padding"
-        />
+        tools:listitem="@layout/purchase_product_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <TextView
+        android:id="@+id/totalCost"
+        android:layout_width="@dimen/width"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:textAlignment="center"/>
 
     <Button
         android:id="@+id/confirmPurchaseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginTop="10dp"
         android:text="Confirm"
-        android:layout_below="@+id/listView"
-        android:layout_centerInParent="true"/>
+        android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

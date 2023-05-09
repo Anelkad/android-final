@@ -5,3 +5,4 @@ const val FIREBASE_URL = "https://android-final-a3bcf-default-rtdb.firebaseio.co
 const val USERS = "users"
 const val PRODUCTS = "products"
 const val CARD = "card"
+const val PURCHASE = "purchases"
