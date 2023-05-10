@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.finalproject.models.CardProduct
+import com.example.finalproject.models.Comment
 import com.example.finalproject.models.Product
 import com.example.finalproject.models.Purchase
 import com.example.finalproject.repositories.ProductRepositoryImp
@@ -13,7 +14,6 @@ import com.example.finalproject.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.security.CryptoPrimitive
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +23,9 @@ class ProductViewModel @Inject constructor(
 
     private val _addProductState = MutableLiveData<Resource<Product>?>(null)
     val addProductState: LiveData<Resource<Product>?> = _addProductState
+
+    private val _addCommentState = MutableLiveData<Resource<Comment>?>(null)
+    val addCommentState: LiveData<Resource<Comment>?> = _addCommentState
 
     private val _addProductToCardState = MutableLiveData<Resource<CardProduct>?>(null)
     val addProductToCardState: LiveData<Resource<CardProduct>?> = _addProductToCardState
@@ -36,6 +39,8 @@ class ProductViewModel @Inject constructor(
     private val _purchaseList = MutableLiveData<ArrayList<Purchase>>(null)
     val purchaseList: LiveData<ArrayList<Purchase>> = _purchaseList
 
+    private val _commentList = MutableLiveData<ArrayList<Comment>>(null)
+    val commentList: LiveData<ArrayList<Comment>> = _commentList
 
     private val _productDetail = MutableLiveData<Product>(null)
     val productDetail: LiveData<Product> = _productDetail
@@ -47,6 +52,12 @@ class ProductViewModel @Inject constructor(
         _addProductState.value = Resource.Loading
         val result = repository.addProduct(product)
         _addProductState.value = result
+    }
+
+    fun addComment(comment: Comment, product_id: String) = viewModelScope.launch {
+        _addCommentState.value = Resource.Loading
+        val result = repository.addComment(comment,product_id)
+        _addCommentState.value = result
     }
 
     fun addProductToCard(product: CardProduct) = viewModelScope.launch {
@@ -108,6 +119,20 @@ class ProductViewModel @Inject constructor(
             when (it) {
                 is Resource.Success -> {
                     _purchaseList.value = it.getSuccessResult()
+                }
+                is Resource.Failure -> {
+                    Log.d("product list view model", "error")
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    fun getCommentList(product_id: String) = viewModelScope.launch {
+        repository.getCommentsList(product_id).collect {
+            when (it) {
+                is Resource.Success -> {
+                    _commentList.value = it.getSuccessResult()
                 }
                 is Resource.Failure -> {
                     Log.d("product list view model", "error")

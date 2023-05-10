@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.finalproject.R
+import com.example.finalproject.adapters.CommentsAdapter
 import com.example.finalproject.databinding.FragmentProductDetailsBinding
 import com.example.finalproject.models.CardProduct
+import com.example.finalproject.models.Comment
 import com.example.finalproject.models.Product
 import com.example.finalproject.utils.Resource
 import com.example.finalproject.viewmodels.ProductViewModel
@@ -24,6 +27,9 @@ class ProductDetailsFragment : BaseFragment() {
     lateinit var binding: FragmentProductDetailsBinding
     val arg: ProductDetailsFragmentArgs by navArgs()
 
+    lateinit var commentAdapter: CommentsAdapter
+    lateinit var commentsList: ArrayList<Comment>
+
     val productViewModel by viewModels<ProductViewModel>()
 
     override fun onCreateView(
@@ -32,9 +38,14 @@ class ProductDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         productViewModel.getProductDetails(arg.id)
-        //Log.d("product detail fragment", arg.id)
+        productViewModel.getCommentList(arg.id)
+
+        commentsList = ArrayList()
+        commentAdapter = CommentsAdapter(commentsList)
 
         binding = FragmentProductDetailsBinding.inflate(inflater,container, false)
+
+        binding.commentListView.adapter = commentAdapter
 
         productViewModel.productDetail.observe(viewLifecycleOwner, Observer {
             binding.progressBar.isVisible = it==null
@@ -44,7 +55,23 @@ class ProductDetailsFragment : BaseFragment() {
                 binding.addToCard.setOnClickListener {
                     addProductToCardObserver(product)
                 }
+                binding.addCommentButton.setOnClickListener {
+                    val bundle = Bundle().apply {
+                        putString("product_id", product.id)
+                    }
+                    findNavController()
+                        .navigate(R.id.action_productDetailsFragment_to_commentProductFragment,bundle)
+                }
+
             }
+        })
+
+        productViewModel.commentList.observe(viewLifecycleOwner, Observer {
+            commentsList.clear()
+            if (it!=null){
+                commentsList.addAll(it)
+            }
+            commentAdapter.notifyDataSetChanged()
         })
 
         return binding.root

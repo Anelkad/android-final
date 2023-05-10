@@ -45,7 +45,7 @@ class SellerFragment : BaseFragment(){
             if (it!=null) {
                 val user = it
                 binding.user.text = "${user.role}: ${user.email}"
-                binding.sellerContent.isVisible = user.role == "admin"
+                binding.sellerContent.isVisible = user.role == "admin" || user.role == "seller"
                 binding.clientContent.isVisible = user.role == "client"
             }
         })

@@ -38,8 +38,12 @@ class PurchaseHistoryFragment : Fragment() {
 
         productViewModel.purchaseList.observe(viewLifecycleOwner, Observer {
             purchaseList.clear()
-            if (it!=null) purchaseList.addAll(it)
-            binding.progressBar.isVisible = purchaseList.isEmpty()
+            binding.progressBar.isVisible = true
+            if (it!=null) {
+                purchaseList.addAll(it)
+                binding.emptyPurchases.isVisible = purchaseList.isEmpty()
+            }
+            binding.progressBar.isVisible = false
             purchasesAdapter.notifyDataSetChanged()
         })
 
