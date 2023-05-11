@@ -74,6 +74,10 @@ class ProductDetailsFragment : BaseFragment() {
             commentAdapter.notifyDataSetChanged()
         })
 
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return binding.root
     }
 

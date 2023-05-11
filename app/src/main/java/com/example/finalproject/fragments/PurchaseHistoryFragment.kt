@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.finalproject.adapters.ProductAdapter
 import com.example.finalproject.adapters.PurchaseHistoryAdapter
 import com.example.finalproject.databinding.FragmentPurchaseHistoryBinding
@@ -46,6 +47,10 @@ class PurchaseHistoryFragment : Fragment() {
             binding.progressBar.isVisible = false
             purchasesAdapter.notifyDataSetChanged()
         })
+
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         return binding.root
     }

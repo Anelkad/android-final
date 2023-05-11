@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SearchProductFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Search product" />
+        android:layout_height="50dp"
+        android:background="@color/purple_700">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textColor="@color/purple_200"
+            android:textSize="@dimen/name_title_size"
+            android:textStyle="bold"
+            />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/searchTitle"
+        android:layout_width="@dimen/width"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolBar"
+        android:background="@drawable/edittext_bg"
+        android:padding="@dimen/padding"
+        android:textSize="@dimen/button_text_size"
+        android:hint="Search"
+        android:inputType="text"
+        android:drawableEnd="@drawable/baseline_search_24"
+        android:drawableTint="@color/purple_700"
+        android:textColor="@color/purple_700"
+        android:textColorHint="@color/purple_700"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchTitle"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@color/purple_700"
+        android:scrollbarSize="3dp"
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:layout_marginEnd="5dp"
+        tools:listitem="@layout/product_item"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:indeterminateTint="@color/purple_700"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>

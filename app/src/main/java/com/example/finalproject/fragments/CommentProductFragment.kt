@@ -118,6 +118,10 @@ class CommentProductFragment : BaseFragment() {
             }
         }
 
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return binding.root
     }
 

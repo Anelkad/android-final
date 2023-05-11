@@ -3,20 +3,27 @@ package com.example.finalproject.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.finalproject.FilterProduct
 import com.example.finalproject.R
 import com.example.finalproject.databinding.ProductItemBinding
 import com.example.finalproject.models.CardProduct
 import com.example.finalproject.models.Product
 
-class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
+class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct>, Filterable {
 
     lateinit var binding: ProductItemBinding
     var productList: ArrayList<Product>
+    var filterList: ArrayList<Product>
+
+    private var filter: FilterProduct? = null
 
     constructor(productList: ArrayList<Product>) : super() {
         this.productList = productList
+        this.filterList = productList
     }
 
     inner class HolderProduct(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -75,6 +82,13 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.HolderProduct> {
 
     fun setOnButtonClickListener(listener: (CardProduct) -> Unit) {
         onButtonClickListener = listener
+    }
+
+    override fun getFilter(): Filter {
+        if (filter==null){
+            filter = FilterProduct(filterList,this)
+        }
+        return filter as FilterProduct
     }
 
 }

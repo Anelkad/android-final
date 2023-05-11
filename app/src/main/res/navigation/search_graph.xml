@@ -12,11 +12,17 @@
         tools:layout="@layout/fragment_search_product" >
         <action
             android:id="@+id/action_searchProductFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment" />
+            app:destination="@id/productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.example.finalproject.fragments.ProductDetailsFragment"
         android:label="fragment_product_details"
-        tools:layout="@layout/fragment_product_details" />
+        tools:layout="@layout/fragment_product_details" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 </navigation>
