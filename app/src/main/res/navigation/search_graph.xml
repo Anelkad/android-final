@@ -24,5 +24,19 @@
         <argument
             android:name="id"
             app:argType="string" />
+        <action
+            android:id="@+id/action_productDetailsFragment_to_commentProductFragment"
+            app:destination="@id/commentProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/commentProductFragment"
+        android:name="com.example.finalproject.fragments.CommentProductFragment"
+        android:label="fragment_comment_product"
+        tools:layout="@layout/fragment_comment_product">
+        <argument
+            android:name="product_id"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -38,15 +40,14 @@ class CommentProductFragment : BaseFragment() {
 
     private fun validateCommentFields(): Boolean {
         commentText = binding.text.text.toString()
-        rating = binding.rating.text.toString()
 
         return when{
             commentText.isEmpty() -> {
                 showSnackBar("Please enter text!",true)
                 false
             }
-            rating.isEmpty() -> {
-                showSnackBar("Please enter rating!",true)
+            binding.radioGroup.checkedRadioButtonId == -1 -> {
+                showSnackBar("Please select rating!",true)
                 false
             }
             else -> {
@@ -87,6 +88,11 @@ class CommentProductFragment : BaseFragment() {
                 currentUser = it
             }
         })
+
+        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            val radio: RadioButton = requireView().findViewById(checkedId)
+            rating = radio.text.toString()
+        }
 
         binding.addCommentButton.setOnClickListener {
             if (validateCommentFields()){

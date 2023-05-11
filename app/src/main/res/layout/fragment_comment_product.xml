@@ -60,18 +60,43 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/rating"
-        android:hint="Type rating"
-        android:layout_width="@dimen/width"
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
-        android:textColor="@color/purple_700"
-        android:textColorHint="@color/purple_700"
-        android:background="@drawable/edittext_bg"
-        android:padding="@dimen/padding"
-        android:textSize="@dimen/button_text_size"
-        android:inputType="number"/>
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <RadioButton
+            android:id="@+id/star1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"/>
+
+        <RadioButton
+            android:id="@+id/star2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"/>
+
+        <RadioButton
+            android:id="@+id/star3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"/>
+
+        <RadioButton
+            android:id="@+id/star4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"/>
+
+        <RadioButton
+            android:id="@+id/star5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"/>
+    </RadioGroup>
 
     <EditText
         android:id="@+id/text"
