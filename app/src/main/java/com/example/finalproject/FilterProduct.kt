@@ -38,7 +38,8 @@ class FilterProduct : Filter {
     }
 
     override fun publishResults(constraint: CharSequence?, results: FilterResults) {
-        adapter.productList = results.values as ArrayList<Product>
+        if(results.values!=null)
+            adapter.productList = results.values as ArrayList<Product>
         adapter.notifyDataSetChanged()
     }
 

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".fragments.SearchProductFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -26,7 +28,6 @@
         android:id="@+id/searchTitle"
         android:layout_width="@dimen/width"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar"
         android:background="@drawable/edittext_bg"
         android:padding="@dimen/padding"
         android:textSize="@dimen/button_text_size"
@@ -36,21 +37,52 @@
         android:drawableTint="@color/purple_700"
         android:textColor="@color/purple_700"
         android:textColorHint="@color/purple_700"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:layout_marginVertical="10dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchTitle"
-        android:scrollbars="vertical"
-        android:scrollbarThumbVertical="@color/purple_700"
-        android:scrollbarSize="3dp"
-        android:orientation="vertical"
-        android:clipToPadding="false"
-        android:layout_marginEnd="5dp"
-        tools:listitem="@layout/product_item"/>
+        android:scrollbarThumbVertical="@color/purple_700">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price range:"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="10dp"/>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rangeSliderPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:valueFrom="0"
+        android:valueTo="20000"
+        android:stepSize="500"
+        app:values="@array/rangeSliderPrice"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rating range:"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="10dp"/>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rangeSliderRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:valueFrom="0"
+        android:valueTo="5"
+        android:stepSize="1"
+        app:values="@array/rangeSliderRating"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -58,8 +90,17 @@
         android:indeterminateTint="@color/purple_700"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/product_item"/>
+
+    </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

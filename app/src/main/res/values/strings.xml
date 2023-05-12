@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">FinalProject</string>
 
+    <string-array name="rangeSliderPrice">
+        <item>500</item>
+        <item>10000</item>
+    </string-array>
+
+    <string-array name="rangeSliderRating">
+        <item>0</item>
+        <item>5</item>
+    </string-array>
+
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
